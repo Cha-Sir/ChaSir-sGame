@@ -1,0 +1,48 @@
+{
+    "bread": {
+      "id": "bread",
+      "name": "面包",
+      "description": "一块普通的黑面包。",
+      "type": "consumable",
+      "icon": "assets/images/items/bread.png",
+      "activeEffect": { "action": "heal", "value": 5 },
+      "price": 2
+    },
+    "dagger": {
+      "id": "dagger",
+      "name": "匕首",
+      "description": "一把简陋的铁匕首。",
+      "type": "equipment",
+      "icon": "assets/images/items/dagger.png",
+      "equipSlot": "weapon",
+      "passiveEffect": { "stat": "combat", "value": 3 },
+       "price": 15
+    },
+    "potion_heal_small": {
+        "id": "potion_heal_small",
+        "name": "小型治疗药水",
+        "description": "恢复少量生命值。",
+        "type": "consumable",
+        "icon": "assets/images/items/potion_heal_small.png",
+        "activeEffect": { "action": "heal", "value": 25 },
+         "price": 30
+    },
+     "dragon_scale": {
+         "id": "dragon_scale",
+         "name": "龙鳞",
+         "description": "一片闪耀的龙鳞，蕴含着强大的力量。",
+         "type": "misc",
+         "icon": "assets/images/items/dragon_scale.png",
+         "price": 500
+     },
+     "amulet_charm": {
+         "id": "amulet_charm",
+         "name": "魅力护符",
+         "description": "佩戴时让你更具说服力。",
+         "type": "equipment",
+         "icon": "assets/images/items/amulet.png",
+         "equipSlot": "accessory",
+         "passiveEffect": { "stat": "charisma", "value": 5 },
+         "price": 150
+     }
+  }

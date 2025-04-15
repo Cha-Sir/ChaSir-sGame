@@ -1,0 +1,163 @@
+{
+    "village_start": {
+      "id": "village_start",
+      "type": "start",
+      "title": "村庄的清晨",
+      "text": "你从简陋的床上醒来，阳光透过窗户的缝隙洒在地板上。村庄的喧嚣隐约传来。你的冒险即将开始。",
+      "image": "assets/images/events/village_morning.jpg",
+      "options": [
+        {
+          "text": "查看自己的状态",
+          "effects": [
+             { "type": "add_tag", "tag": "谨慎的" }
+          ],
+          "nextEventId": "check_self"
+        },
+        {
+          "text": "直接出门看看",
+           "effects": [
+              { "type": "add_tag", "tag": "鲁莽的" }
+           ],
+          "nextEventId": "village_square"
+        }
+      ]
+    },
+    "check_self": {
+        "id": "check_self",
+        "type": "info",
+        "title": "审视自身",
+        "text": "你检查了一下自己，感觉还不错。身上只有几块面包和一把防身的匕首。",
+        "options": [
+            { "text": "出门前往村庄广场", "nextEventId": "village_square" }
+        ]
+    },
+    "village_square": {
+       "id": "village_square",
+       "type": "main",
+       "title": "村庄广场",
+       "text": "广场上人来人往。你看到告示板前围着一些人，一个老人（格雷格）在旁边唉声叹气。",
+       "relatedNpcId": "old_man_greg", // 关联NPC，方便UI高亮
+       "options": [
+           {
+               "text": "去看看告示板",
+               "nextEventId": "notice_board"
+           },
+           {
+               "text": "和老格雷格搭话",
+                "effects": [ // 遇到NPC时自动添加
+                    // { "type": "discover_npc", "npcId": "old_man_greg" } // 这个逻辑可以在 event_handler 中处理
+                ],
+               "nextEventId": "talk_to_greg_1"
+           },
+            {
+                "text": "先去酒馆看看 (需要 智力 > 12)",
+                "condition": { "minStats": { "intelligence": 13 } },
+                "nextEventId": "enter_tavern_event"
+            }
+       ]
+    },
+     "talk_to_greg_1": {
+         "id": "talk_to_greg_1",
+         "type": "npc_interaction",
+         "title": "与格雷格交谈",
+         "text": "\"唉，我的传家宝地图碎片被哥布林抢走了...就在村外的森林里。年轻人，你能帮我找回来吗？\" 老格雷格愁眉苦脸地看着你。",
+         "options": [
+             {
+                 "text": "答应帮忙 (需要 意志 > 10)",
+                  "condition": { "minStats": { "willpower": 11 } },
+                 "effects": [
+                     { "type": "add_tag", "tag": "乐于助人" },
+                     { "type": "affinity_change", "npcId": "old_man_greg", "value": 10 },
+                     { "type": "add_quest_log", "questId": "find_map_fragment" } // 需要任务系统
+                 ],
+                 "nextEventId": "accept_greg_quest"
+             },
+              {
+                  "text": "询问报酬",
+                  "effects": [
+                      { "type": "affinity_change", "npcId": "old_man_greg", "value": -5 }
+                  ],
+                  "nextEventId": "ask_greg_reward"
+              },
+             {
+                 "text": "表示无能为力",
+                 "effects": [
+                    { "type": "affinity_change", "npcId": "old_man_greg", "value": -10 }
+                 ],
+                 "nextEventId": "refuse_greg_quest" // 可能回到广场或触发其他事件
+             }
+         ]
+     },
+      "forest_encounter_goblin": {
+         "id": "forest_encounter_goblin",
+         "type": "random", // 可以是随机事件
+         "title": "森林遭遇",
+         "text": "你在森林中跋涉，突然跳出来一只绿皮哥布林，挥舞着生锈的短刀！",
+         "image": "assets/images/events/goblin.jpg",
+         "options": [
+             {
+                 "text": "战斗！(进行战斗检定)",
+                 "check": {
+                     "stat": "combat", // 检定属性
+                     "success": { // 成功结果
+                          "text": "你轻松地击败了哥布林！",
+                          "effects": [
+                              { "type": "money_change", "value": 5 },
+                              { "type": "add_item", "itemId": "goblin_ear", "quantity": 1 },
+                               { "type": "xp_gain", "value": 10 } // 需要经验值系统
+                          ],
+                          "goToInterlude": true // 战斗结束后通常进入幕间
+                     },
+                     "failure": { // 失败结果
+                          "text": "哥布林动作敏捷，你被打伤了！",
+                          "effects": [ { "type": "hp_change", "value": -15 } ],
+                           "nextEventId": "goblin_escape" // 或者哥布林逃跑/继续战斗
+                     }
+                 }
+             },
+             {
+                  "text": "尝试用智力唬住它 (需要 智力 > 14)",
+                  "condition": { "minStats": { "intelligence": 15 } },
+                  "check": {
+                       "stat": "intelligence",
+                       "success": {
+                           "text": "你大声呵斥，哥布林被你的气势吓跑了！",
+                           "effects": [{ "type": "add_tag", "tag": "唬人的"}],
+                           "goToInterlude": true
+                       },
+                       "failure": {
+                            "text": "你的虚张声势没有奏效，哥布林攻了上来！",
+                            "effects": [ { "type": "hp_change", "value": -10 } ],
+                            "nextEventId": "forced_combat_goblin" // 强制进入战斗
+                       }
+                   }
+             },
+             {
+                  "text": "丢下面包逃跑 (需要有 面包)",
+                  "condition": { "requiredItems": [{ "itemId": "bread", "quantity": 1 }] },
+                  "effects": [
+                      { "type": "remove_item", "itemId": "bread", "quantity": 1 },
+                      { "type": "add_tag", "tag": "胆小的"}
+                  ],
+                  "goToInterlude": true // 逃跑成功进入幕间
+             }
+         ]
+     },
+      "event_chain_end_example": {
+          "id": "event_chain_end_example",
+          "type": "conclusion",
+          "title": "告一段落",
+          "text": "这里的事件似乎告一段落了，你可以稍作休整。",
+          "options": [], // 没有选项
+          "goToInterlude": true // 明确指定进入幕间
+      },
+       "error_event_not_found": {
+           "id": "error_event_not_found",
+           "type": "error",
+           "title": "系统错误",
+           "text": "发生了一个错误，找不到对应的事件数据。请尝试重新加载或联系开发者。",
+           "options": [
+                { "text": "尝试回到安全点 (进入幕间)", "goToInterlude": true }
+           ]
+       }
+  }

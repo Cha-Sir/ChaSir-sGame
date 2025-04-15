@@ -1,0 +1,26 @@
+{
+    "old_man_greg": {
+      "id": "old_man_greg",
+      "name": "老格雷格",
+      "avatar": "assets/images/npcs/greg.png",
+      "tags": ["村民", "任务提供者"],
+      "stats": { "combat": 5, "intelligence": 60, "charisma": 40 },
+      "inventory": [{ "itemId": "village_map_fragment", "quantity": 1 }]
+    },
+    "barkeep_finn": {
+       "id": "barkeep_finn",
+       "name": "酒保芬恩",
+       "avatar": "assets/images/npcs/finn.png",
+       "tags": ["酒馆常客", "商人"],
+       "stats": { "combat": 25, "intelligence": 40, "charisma": 55 },
+       "inventory": [{ "itemId": "ale", "quantity": 10 }] // 他卖的东西？
+    },
+     "shady_merchant": {
+         "id": "shady_merchant",
+         "name": "神秘商人",
+         "avatar": "assets/images/npcs/merchant.png",
+         "tags": ["商人", "稀有"],
+         "stats": { "combat": 15, "intelligence": 70, "charisma": 30 }
+         // 通常不在普通 NPC 列表中，由幕间逻辑处理
+     }
+  }

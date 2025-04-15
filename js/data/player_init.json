@@ -1,0 +1,18 @@
+{
+    "initialHp": 100,
+    "initialMoney": 25,
+    "initialStats": {
+      "combat": 12,
+      "intelligence": 15,
+      "charisma": 13,
+      "willpower": 11,
+      "magic": 9
+    },
+    "initialTags": ["新手", "好奇的"],
+    "initialItems": [
+      { "itemId": "bread", "quantity": 3 },
+      { "itemId": "dagger", "quantity": 1 }
+    ],
+    "startEventId": "village_start",
+    "initialQuestProgress": 0
+  }

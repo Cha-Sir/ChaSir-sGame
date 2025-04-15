@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网页文字冒险游戏</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div id="start-screen">
+        <h1>游戏标题</h1>
+        <div class="avatar-section">
+            <img id="avatar-preview" src="assets/images/default_avatar.png" alt="Avatar Preview" width="100">
+            <input type="file" id="avatar-upload" accept="image/*" style="display: none;">
+            <button onclick="document.getElementById('avatar-upload').click()">上传头像</button>
+        </div>
+        <input type="text" id="player-name" placeholder="输入你的名字">
+        <button id="start-button">开始游戏</button>
+    </div>
+
+    <div id="game-screen" class="hidden">
+        <div class="panel" id="player-panel">
+            <div class="panel-header" onclick="togglePanel('player-details')">
+                <img id="player-avatar-main" src="assets/images/default_avatar.png" alt="Player Avatar" width="30">
+                <span id="player-name-main">玩家</span> |
+                <span>生命: <span id="player-hp">100</span></span> |
+                <span>金钱: <span id="player-money">0</span></span>
+                <span class="toggle-icon">+</span>
+            </div>
+            <div id="player-details" class="panel-content hidden">
+                <p>属性:</p>
+                <ul>
+                    <li>战斗: <span id="player-stat-combat">10</span></li>
+                    <li>智力: <span id="player-stat-intelligence">10</span></li>
+                    <li>魅力: <span id="player-stat-charisma">10</span></li>
+                    <li>意志: <span id="player-stat-willpower">10</span></li>
+                    <li>魔力: <span id="player-stat-magic">10</span></li>
+                </ul>
+                <p>TAGs: <span id="player-tags">无</span></p>
+                <p>技能树: <span id="player-skills">（暂未实现）</span></p>
+            </div>
+        </div>
+
+        <div class="panel" id="npc-panel">
+            <div class="panel-header" onclick="togglePanel('npc-list')">
+                 NPC <span class="toggle-icon">+</span>
+            </div>
+            <div id="npc-list" class="panel-content hidden">
+                <div id="recent-npcs"></div>
+                <details>
+                    <summary>其他NPC</summary>
+                    <div id="other-npcs"></div>
+                </details>
+            </div>
+        </div>
+
+        <div class="panel" id="inventory-panel">
+             <div class="panel-header" onclick="togglePanel('inventory-grid')">
+                 背包 <span class="toggle-icon">+</span>
+            </div>
+            <div id="inventory-grid" class="panel-content hidden inventory-grid">
+                </div>
+            <div id="item-context-menu" class="context-menu hidden">
+                <button data-action="use">使用</button>
+                <button data-action="give">赠送</button>
+                <button data-action="sell">售卖</button>
+                <button data-action="destroy">销毁</button>
+            </div>
+        </div>
+
+        <div class="panel" id="event-panel">
+            <h2>事件</h2>
+            <div id="event-content">
+                <img id="event-image" src="" alt="Event Image" class="hidden" style="max-width: 100%; height: auto;">
+                <p id="event-text">欢迎来到游戏...</p>
+            </div>
+            <div id="event-options">
+                </div>
+             <div id="dice-roll-result" class="hidden">
+                骰子检定: <span id="dice-roll-display"></span>
+            </div>
+            <button id="interlude-button" class="hidden" onclick="enterInterlude()">进入幕间</button>
+        </div>
+    </div>
+
+    <div id="interlude-screen" class="hidden">
+        <h2>幕间阶段</h2>
+        <div id="interlude-actions">
+            <button onclick="visitLocation('tavern')">前往酒馆</button>
+            <button onclick="visitLocation('merchant')">拜访神秘商人</button>
+            <button onclick="visitLocation('home')">返回住宅</button>
+            <button onclick="startNextPhase()">开始下一阶段</button>
+        </div>
+        <div id="interlude-content">
+            </div>
+         <p>剩余行动点: <span id="interlude-ap">3</span></p> </div>
+
+    <div id="end-screen" class="hidden">
+        <h2 id="end-title">游戏结束</h2>
+        <p id="end-message">你的旅程结束了。</p>
+        <div id="end-playback">
+            </div>
+        <button onclick="restartGame()">重新开始</button>
+    </div>
+
+
+    <script src="js/utils.js"></script>
+    <script src="js/game_state.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/event_handler.js"></script>
+    <script src="js/interlude.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
